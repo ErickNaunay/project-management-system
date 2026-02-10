@@ -6,4 +6,6 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+    environment:
+      - PYTHONDONTWRITEBYTECODE=1 # Avoid writing __pycache__ files
     restart: unless-stopped
