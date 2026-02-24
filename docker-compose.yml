@@ -10,6 +10,15 @@ services:
       - "5432:5432"
     volumes:
       - pm-data:/var/lib/prostgresql/data
+  db-ui:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=enaunay@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=root
+    volumes:
+      - db-ui-data:/var/lib/pgadmin
+    ports:
+      - "8085:80"
   api:
     build: .
     container_name: project-management-system
@@ -24,3 +33,5 @@ services:
 
 volumes:
   pm-data:
+  db-ui-data:
+  

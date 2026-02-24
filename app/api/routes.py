@@ -1,15 +1,17 @@
 from fastapi import APIRouter, Depends, HTTPException
 
+from app.infra.repo_factory import build_repo_factory
 from app.domain.exceptions import DomainError, NotFoundError, InvalidStatusTransition, ValidationError
-from app.repositories.memory import InMemoryProjectRepo, InMemoryTaskRepo
 from app.services.project_service import ProjectService
 from app.services.task_service import TaskService
 from app.schemas.dto import ProjectCreate, ProjectOut, TaskCreate, TaskOut, TaskUpdate
 
 router = APIRouter()
 
-project_repo = InMemoryProjectRepo()
-task_repo = InMemoryTaskRepo()
+factory = build_repo_factory()
+
+project_repo = factory.create_project_repo()
+task_repo = factory.create_task_repo()
 
 def get_project_service() -> ProjectService:
     return ProjectService(project_repo)

@@ -1,6 +1,6 @@
 from datetime import date
 from sqlalchemy import String, Date, ForeignKey
-from sqlalchemy import Mapped, mapped_column, relationship
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infra.db import Base
 
@@ -10,6 +10,11 @@ class ProjectModel(Base):
 
     id: Mapped[str] = mapped_column(String, primary_key = True)
     name: Mapped[str] = mapped_column(String, nullable=False)
+
+    tasks: Mapped[list["TaskModel"]] = relationship(
+        back_populates='project',
+        cascade='all, delete-orphan'
+    )
 
 class TaskModel(Base):
 
@@ -23,3 +28,7 @@ class TaskModel(Base):
     due_date: Mapped[date | None] = mapped_column(Date, nullable = True)
 
     task_type: Mapped[str] = mapped_column(String, nullable = False)
+
+    project: Mapped["ProjectModel"] = relationship(
+        back_populates='tasks'
+    )
